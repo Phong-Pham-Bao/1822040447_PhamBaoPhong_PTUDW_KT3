@@ -1,0 +1,18 @@
+{
+  "name": "server-kt3",
+  "version": "1.0.0",
+  "description": "Backend API Node.js/Express xac thuc JWT cho bai KT3 - Pham Bao Phong",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": ["express", "jwt", "cors", "mern"],
+  "author": "Pham Bao Phong - 1822040447",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

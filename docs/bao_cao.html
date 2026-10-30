@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Báo Cáo KT3 - Kết Hợp React và Node.js - Phạm Bảo Phong 1822040447</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 20mm 15mm 20mm 15mm;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    body {
+      background-color: #ffffff;
+      color: #1e293b;
+      font-size: 13.5px;
+      line-height: 1.6;
+    }
+    .cover-page {
+      page-break-after: always;
+      text-align: center;
+      padding: 60px 20px 40px;
+      border: 3px double #2563eb;
+      min-height: 850px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .cover-header {
+      font-size: 15px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #1e3a8a;
+      line-height: 1.5;
+    }
+    .cover-divider {
+      width: 140px;
+      height: 3px;
+      background: #2563eb;
+      margin: 15px auto;
+    }
+    .cover-title-box {
+      margin: 60px 0;
+    }
+    .cover-main-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #1d4ed8;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .cover-sub-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #0f172a;
+      margin-bottom: 15px;
+    }
+    .cover-topic {
+      font-size: 14px;
+      color: #475569;
+      font-style: italic;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+    .cover-info-table {
+      margin: 40px auto;
+      text-align: left;
+      font-size: 14px;
+      border-collapse: collapse;
+      width: 480px;
+    }
+    .cover-info-table td {
+      padding: 8px 12px;
+    }
+    .cover-info-table td.label {
+      font-weight: 600;
+      color: #334155;
+      width: 180px;
+    }
+    .cover-info-table td.value {
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .cover-footer {
+      font-size: 13px;
+      color: #64748b;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 15px;
+    }
+
+    /* Content styling */
+    .page {
+      page-break-after: always;
+      padding-top: 10px;
+    }
+    .page:last-child {
+      page-break-after: avoid;
+    }
+    h2.section-heading {
+      font-size: 18px;
+      color: #1e40af;
+      border-left: 5px solid #2563eb;
+      padding-left: 12px;
+      margin-top: 25px;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    h3.sub-heading {
+      font-size: 15px;
+      color: #0f172a;
+      margin: 16px 0 8px;
+      font-weight: 700;
+    }
+    p {
+      margin-bottom: 10px;
+      text-align: justify;
+    }
+    .question-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      page-break-inside: avoid;
+    }
+    .question-title {
+      font-weight: 700;
+      color: #1e293b;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+    .options-list {
+      list-style: none;
+      margin: 8px 0;
+    }
+    .options-list li {
+      padding: 4px 8px;
+      margin-bottom: 4px;
+      border-radius: 4px;
+    }
+    .options-list li.correct {
+      background: #dcfce7;
+      color: #166534;
+      font-weight: 700;
+      border: 1px solid #86efac;
+    }
+    .explanation-box {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 8px 12px;
+      font-size: 12.5px;
+      color: #1e3a8a;
+      margin-top: 8px;
+      border-radius: 0 4px 4px 0;
+    }
+    .badge-correct {
+      display: inline-block;
+      background: #16a34a;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 10px;
+      margin-left: 8px;
+    }
+
+    /* Summary Table */
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0 25px;
+      page-break-inside: avoid;
+    }
+    .summary-table th {
+      background: #1e40af;
+      color: white;
+      font-weight: 700;
+      padding: 8px 10px;
+      font-size: 13px;
+      text-align: center;
+    }
+    .summary-table td {
+      border: 1px solid #cbd5e1;
+      padding: 8px 10px;
+      font-size: 12.5px;
+    }
+    .summary-table tr:nth-child(even) {
+      background: #f8fafc;
+    }
+    .summary-table td.center {
+      text-align: center;
+      font-weight: 700;
+    }
+
+    /* Code block */
+    pre {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 12px 14px;
+      border-radius: 6px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 11px;
+      line-height: 1.45;
+      overflow-x: auto;
+      margin: 10px 0 15px;
+      page-break-inside: avoid;
+    }
+    code {
+      font-family: 'Consolas', monospace;
+      background: #e2e8f0;
+      color: #0f172a;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+    }
+
+    /* Images */
+    .screenshot-card {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 12px;
+      margin: 16px 0;
+      page-break-inside: avoid;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .screenshot-card img {
+      width: 100%;
+      max-height: 380px;
+      object-fit: contain;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+      display: block;
+    }
+    .screenshot-caption {
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: #334155;
+      margin-top: 8px;
+    }
+    .screenshot-desc {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 4px;
+      text-align: justify;
+    }
+
+    .info-card {
+      background: #f8fafc;
+      border-left: 4px solid #2563eb;
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 12px 0;
+    }
+
+    .link-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 15px 0;
+    }
+    .link-box a {
+      color: #15803d;
+      font-weight: 700;
+      text-decoration: underline;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== TRANG BÌA ==================== -->
+  <div class="cover-page">
+    <div class="cover-top">
+      <div class="cover-header">
+        TRƯỜNG ĐẠI HỌC CÔNG THƯƠNG TP. HỒ CHÍ MINH<br>
+        KHOA CÔNG NGHỆ THÔNG TIN
+      </div>
+      <div class="cover-divider"></div>
+    </div>
+
+    <div class="cover-title-box">
+      <div class="cover-sub-title">BÁO CÁO THỰC HÀNH & KIỂM TRA SỐ 3 (KT3)</div>
+      <div class="cover-main-title">CHƯƠNG 4: KẾT HỢP REACT VÀ NODE.JS</div>
+      <p class="cover-topic">
+        Học phần: Phát triển ứng dụng Web<br>
+        Chủ đề: Giao tiếp Client–Server qua CORS, Xử lý Đăng nhập, JSON Web Token (JWT) và Middleware Phân quyền bảo mật
+      </p>
+    </div>
+
+    <div>
+      <table class="cover-info-table">
+        <tr>
+          <td class="label">Sinh viên thực hiện:</td>
+          <td class="value">Phạm Bảo Phong</td>
+        </tr>
+        <tr>
+          <td class="label">Mã số sinh viên:</td>
+          <td class="value">1822040447</td>
+        </tr>
+        <tr>
+          <td class="label">Lớp học phần:</td>
+          <td class="value">Phát triển ứng dụng Web</td>
+        </tr>
+        <tr>
+          <td class="label">Hệ đào tạo:</td>
+          <td class="value">Đại học chính quy</td>
+        </tr>
+        <tr>
+          <td class="label">Thời gian hoàn thành:</td>
+          <td class="value">Tháng 10 / 2026</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="cover-footer">
+      Thành phố Hồ Chí Minh — Năm 2026
+    </div>
+  </div>
+
+  <!-- ==================== PHẦN 1: TRẮC NGHIỆM ==================== -->
+  <div class="page">
+    <h2 class="section-heading">PHẦN 1: TRẮC NGHIỆM LÝ THUYẾT (KHOANH TRÒN ĐÁP ÁN ĐÚNG)</h2>
+    <p>Dưới đây là bảng tổng hợp các phương án chính xác và phần phân tích cơ chế chi tiết dựa theo nội dung Slide bài giảng Chương 4 - Phát triển ứng dụng Web:</p>
+
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th style="width: 10%;">Câu</th>
+          <th style="width: 25%;">Chủ đề câu hỏi</th>
+          <th style="width: 15%;">Đáp án</th>
+          <th style="width: 50%;">Nội dung đáp án chuẩn</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="center">Câu 1</td>
+          <td>Cấu hình CORS trong MERN</td>
+          <td class="center"><strong style="color: #16a34a; font-size: 14px;">C</strong></td>
+          <td>Vì Client và Server thường chạy ở hai cổng (port) hoặc tên miền khác nhau.</td>
+        </tr>
+        <tr>
+          <td class="center">Câu 2</td>
+          <td>Tác dụng .then(res => res.json())</td>
+          <td class="center"><strong style="color: #16a34a; font-size: 14px;">B</strong></td>
+          <td>Chuyển đổi phản hồi (response) từ HTTP sang đối tượng JavaScript để sử dụng.</td>
+        </tr>
+        <tr>
+          <td class="center">Câu 3</td>
+          <td>Bước tiếp theo sau khi Server query DB</td>
+          <td class="center"><strong style="color: #16a34a; font-size: 14px;">C</strong></td>
+          <td>Server trả kết quả JSON kèm mã trạng thái (VD: 200) về cho Client.</td>
+        </tr>
+        <tr>
+          <td class="center">Câu 4</td>
+          <td>Hàm tạo Token trong jsonwebtoken</td>
+          <td class="center"><strong style="color: #16a34a; font-size: 14px;">C</strong></td>
+          <td><code>jwt.sign()</code></td>
+        </tr>
+        <tr>
+          <td class="center">Câu 5</td>
+          <td>Cách chuẩn gửi JWT lên Server</td>
+          <td class="center"><strong style="color: #16a34a; font-size: 14px;">D</strong></td>
+          <td>Gửi qua Header với định dạng: <code>Authorization: Bearer &lt;token&gt;</code>.</td>
+        </tr>
+        <tr>
+          <td class="center">Câu 6</td>
+          <td>Vai trò hàm next() trong Middleware</td>
+          <td class="center"><strong style="color: #16a34a; font-size: 14px;">B</strong></td>
+          <td>Chuyển tiếp request đến route xử lý tiếp theo nếu token hợp lệ.</td>
+        </tr>
+        <tr>
+          <td class="center">Câu 7</td>
+          <td>Ý nghĩa state loading và error trong React</td>
+          <td class="center"><strong style="color: #16a34a; font-size: 14px;">A</strong></td>
+          <td>Vì việc gọi API là bất đồng bộ, cần hiển thị trạng thái chờ và thông báo nếu thất bại để cải thiện trải nghiệm người dùng (UX).</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Chi tiết từng câu -->
+    <div class="question-box">
+      <div class="question-title">Câu 1: Trong kiến trúc MERN, vì sao React (Client) và Node.js (Server) thường cần được cấu hình CORS?</div>
+      <ul class="options-list">
+        <li>A. Vì chúng sử dụng chung một cơ sở dữ liệu MongoDB.</li>
+        <li>B. Vì React không thể gọi trực tiếp API nếu không có CORS.</li>
+        <li class="correct">C. Vì Client và Server thường chạy ở hai cổng (port) hoặc tên miền khác nhau. <span class="badge-correct">ĐÚNG</span></li>
+        <li>D. Vì CORS giúp mã hóa mật khẩu người dùng trước khi gửi lên Server.</li>
+      </ul>
+      <div class="explanation-box">
+        <strong>Giải thích chi tiết:</strong> Trình duyệt web áp dụng cơ chế bảo mật Same-Origin Policy (SOP). Khi Client React chạy tại <code>http://localhost:5173</code> gọi API tới Node.js Server tại <code>http://localhost:3000</code>, hai ứng dụng có Port khác nhau nên bị coi là khác Nguồn gốc (Cross-Origin). Nếu Server không cấu hình CORS để thêm header <code>Access-Control-Allow-Origin</code>, trình duyệt sẽ chặn response gửi về client.
+      </div>
+    </div>
+
+    <div class="question-box">
+      <div class="question-title">Câu 2: Khi sử dụng fetch để gọi API trong React, dòng code .then(res => res.json()) có tác dụng gì?</div>
+      <ul class="options-list">
+        <li>A. Chuyển đổi dữ liệu JSON gửi từ Client thành chuỗi.</li>
+        <li class="correct">B. Chuyển đổi phản hồi (response) từ HTTP sang đối tượng JavaScript để sử dụng. <span class="badge-correct">ĐÚNG</span></li>
+        <li>C. Tự động lưu dữ liệu vào state của React.</li>
+        <li>D. Gửi kèm JWT token vào header của request.</li>
+      </ul>
+      <div class="explanation-box">
+        <strong>Giải thích chi tiết:</strong> Hàm <code>fetch()</code> trả về một <code>Response</code> object chứa ReadableStream dữ liệu thô dạng byte. Phương thức <code>res.json()</code> đọc toàn bộ stream đó và phân tích cú pháp (parse) chuỗi JSON thành đối tượng JavaScript (hoàn trả một Promise) để các hàm tiếp theo có thể thao tác với object/array.
+      </div>
+    </div>
+
+    <div class="question-box">
+      <div class="question-title">Câu 3: Theo vòng đời của một tính năng động, sau khi Express Server truy vấn xong dữ liệu từ MongoDB, bước tiếp theo hệ thống sẽ làm gì?</div>
+      <ul class="options-list">
+        <li>A. React tự động cập nhật state.</li>
+        <li>B. Express chạy middleware xác thực.</li>
+        <li class="correct">C. Server trả kết quả JSON kèm mã trạng thái (VD: 200) về cho Client. <span class="badge-correct">ĐÚNG</span></li>
+        <li>D. Trình duyệt tự động render lại giao diện.</li>
+      </ul>
+      <div class="explanation-box">
+        <strong>Giải thích chi tiết:</strong> Chu trình Request - Response trong kiến trúc Client-Server: (1) Client gửi request -> (2) Express nhận request và chạy middleware xác thực -> (3) Server query MongoDB -> (4) <strong>Server phản hồi kết quả về Client: <code>res.status(200).json(data)</code></strong> -> (5) Sau khi nhận được dữ liệu, React Client mới tiến hành cập nhật state và re-render giao diện.
+      </div>
+    </div>
+
+    <div class="question-box">
+      <div class="question-title">Câu 4: Hàm nào của thư viện jsonwebtoken được sử dụng để tạo ra một JWT token sau khi người dùng đăng nhập thành công?</div>
+      <ul class="options-list">
+        <li>A. jwt.verify()</li>
+        <li>B. jwt.create()</li>
+        <li class="correct">C. jwt.sign() <span class="badge-correct">ĐÚNG</span></li>
+        <li>D. jwt.generate()</li>
+      </ul>
+      <div class="explanation-box">
+        <strong>Giải thích chi tiết:</strong> Thư viện <code>jsonwebtoken</code> cung cấp hàm <code>jwt.sign(payload, secretKey, options)</code> để ký số sinh token. Ngược lại, <code>jwt.verify()</code> dùng ở Middleware để kiểm tra tính hợp lệ của token. Thư viện không có hàm <code>jwt.create()</code> hay <code>jwt.generate()</code>.
+      </div>
+    </div>
+
+    <div class="question-box">
+      <div class="question-title">Câu 5: Cách chuẩn nhất để gửi JWT token từ React lên Node.js khi gọi một API cần bảo mật là gì?</div>
+      <ul class="options-list">
+        <li>A. Gửi qua URL query (VD: ?token=...).</li>
+        <li>B. Gửi qua Body của request.</li>
+        <li>C. Gửi qua Cookie mặc định của trình duyệt.</li>
+        <li class="correct">D. Gửi qua Header với định dạng: Authorization: Bearer &lt;token&gt;. <span class="badge-correct">ĐÚNG</span></li>
+      </ul>
+      <div class="explanation-box">
+        <strong>Giải thích chi tiết:</strong> Theo chuẩn quốc tế RFC 6750 (OAuth 2.0 Bearer Token), token được gửi trong trường Header <code>Authorization: Bearer &lt;token&gt;</code>. Cách này hoạt động đồng nhất cho mọi HTTP Method (GET, POST, PUT, DELETE), không bị lộ qua URL log như query parameter, và tách biệt dữ liệu nghiệp vụ ở body.
+      </div>
+    </div>
+
+    <div class="question-box">
+      <div class="question-title">Câu 6: Trong Middleware phân quyền của Node.js, hàm next() có vai trò gì?</div>
+      <ul class="options-list">
+        <li>A. Dừng request lại và trả về lỗi 403.</li>
+        <li class="correct">B. Chuyển tiếp request đến route xử lý tiếp theo nếu token hợp lệ. <span class="badge-correct">ĐÚNG</span></li>
+        <li>C. Tự động giải mã token và lưu vào Database.</li>
+        <li>D. Tạo một token mới nếu token cũ đã hết hạn.</li>
+      </ul>
+      <div class="explanation-box">
+        <strong>Giải thích chi tiết:</strong> Trong mô hình Middleware của Express, các hàm chạy theo chuỗi tuần tự (pipeline). Nếu điều kiện xác thực thành công, việc gọi <code>next()</code> sẽ chuyển quyền điều khiển sang middleware hoặc controller kế tiếp. Nếu không gọi <code>next()</code> và không gửi response, request sẽ bị treo vô tận.
+      </div>
+    </div>
+
+    <div class="question-box">
+      <div class="question-title">Câu 7: Vì sao cần phải có các state như loading và loi (error) khi gọi API trong React?</div>
+      <ul class="options-list">
+        <li class="correct">A. Vì việc gọi API là bất đồng bộ, cần hiển thị trạng thái chờ và thông báo nếu thất bại để cải thiện trải nghiệm người dùng (UX). <span class="badge-correct">ĐÚNG</span></li>
+        <li>B. Vì Axios và Fetch bắt buộc phải nhận vào 3 biến state này.</li>
+        <li>C. Để Server biết khi nào Client đã tải xong trang.</li>
+        <li>D. Để bảo vệ dữ liệu không bị tấn công.</li>
+      </ul>
+      <div class="explanation-box">
+        <strong>Giải thích chi tiết:</strong> Gọi API qua mạng là tác vụ bất đồng bộ (Asynchronous) luôn có độ trễ do đường truyền hoặc xử lý phía máy chủ, đồng thời có nguy cơ phát sinh lỗi (mất mạng, 401, 403, 500). Việc dùng <code>loading</code> giúp hiển thị spinner tránh tình trạng người dùng click liên tục hay nghĩ ứng dụng bị đơ; dùng <code>error</code> giúp thông báo chính xác lý do thất bại để người dùng có hướng xử lý.
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PHẦN 2: KIẾN TRÚC & DỰ ÁN THỰC HÀNH ==================== -->
+  <div class="page">
+    <h2 class="section-heading">PHẦN 2: KIẾN TRÚC & YÊU CẦU THỰC HÀNH (MINI-PROJECT)</h2>
+    <h3 class="sub-heading">1. Tổng quan Kiến trúc Hệ thống (MERN Flow)</h3>
+    <p>
+      Hệ thống "Quản lý danh sách sản phẩm bảo mật" được tổ chức tách biệt thành 2 tầng Client - Server:
+    </p>
+    <div class="info-card">
+      <ul>
+        <li><strong>Frontend (React / Vite - Port 5173):</strong> Cung cấp giao diện người dùng gồm Form Đăng nhập và Bảng danh sách sản phẩm. Sử dụng các Hook <code>useState</code>, <code>useEffect</code> để quản lý trạng thái động (loading, error, data) và lưu trữ JWT Token vào <code>localStorage</code>.</li>
+        <li><strong>Backend (Node.js / Express - Port 3000):</strong> Cung cấp API RESTful. Sử dụng <code>cors</code> để mở cổng cho React, <code>jsonwebtoken</code> để tạo và xác thực token, cùng middleware <code>xacThuc</code> độc lập để bảo vệ các tuyến dữ liệu nhạy cảm.</li>
+      </ul>
+    </div>
+
+    <h3 class="sub-heading">2. Sơ đồ Luồng Hoạt động (Sequence Diagram)</h3>
+    <pre>
+[REACT CLIENT - Port 5173]               [EXPRESS SERVER - Port 3000]
+         |                                           |
+  (1)    | --- POST /login {email, matKhau} -------> |
+         |                                           | Kiem tra: admin@gmail.com / 123456
+         |                                           | Hop le -> jwt.sign(payload, SECRET)
+         | <--- HTTP 200 { token, user } ----------- |
+         |                                           |
+  (2)    | Luu token vao localStorage                |
+         |                                           |
+  (3)    | --- GET /api/products ------------------> | [Middleware xacThuc]
+         |     Header: Authorization: Bearer &lt;token&gt;  | - Lay header Authorization
+         |                                           | - jwt.verify(token, SECRET)
+         |                                           | - Hop le -> req.user = decoded -> next()
+         | <--- HTTP 200 { data: [sanPham...] } ---- | - Tra ve mang JSON san pham
+         |                                           |
+  (4)    | Set loading = false, render du lieu       |
+    </pre>
+
+    <h3 class="sub-heading">3. Cấu trúc thư mục mã nguồn bài nộp</h3>
+    <p>Dự án được lưu trữ tập trung trong thư mục mang mã sinh viên theo đúng yêu cầu đề bài:</p>
+    <pre>
+1822040447_PhamBaoPhong_PTUDW_KT3/
+├── server/                               # Thu muc Backend Node.js
+│   ├── package.json                      # Khai bao express, cors, jsonwebtoken
+│   ├── middleware.js                     # Middleware xacThuc JWT
+│   └── server.js                         # Khoi tao Express, POST /login, GET /api/products
+├── client/                               # Thu muc Frontend React (Vite)
+│   ├── package.json                      # Khai bao react, react-dom, vite
+│   ├── vite.config.js                    # Cau hinh port 5173
+│   ├── index.html                        # File HTML goc
+│   └── src/
+│       ├── main.jsx                      # Diem khoi dau React DOM
+│       ├── App.jsx                       # Quan ly phien lam viec va hien thi co dieu kien
+│       ├── App.css                       # Giao dien hien dai, responsive
+│       └── components/
+│           ├── LoginForm.jsx             # Form dang nhap, gui POST /login, luu token
+│           ├── ProductList.jsx           # Goi GET /api/products, xu ly loading/error/data
+│           └── Navbar.jsx                # Header, hien thi user, nut dang xuat & test 403
+├── screenshots/                          # Thu muc chua anh chup man hinh chay thuc te
+│   ├── 01_trang_dang_nhap.png
+│   ├── 02_loi_dang_nhap_401.png
+│   ├── 03_danh_sach_san_pham_thanh_cong.png
+│   ├── 04_loi_token_403.png
+│   └── 05_trang_thai_loading.png
+├── docs/                                 # Thu muc tai lieu bao cao
+│   └── bao_cao.html
+├── BaoCao_1822040447_PhamBaoPhong_PTUDW_KT3.pdf   # File bao cao PDF hoan chinh
+└── README.md                             # Huong dan cai dat, van hanh va link ma nguon
+    </pre>
+  </div>
+
+  <!-- ==================== PHẦN 3: SOURCE CODE ==================== -->
+  <div class="page">
+    <h2 class="section-heading">PHẦN 3: CODE CHÍNH VÀ GIẢI THÍCH CHI TIẾT</h2>
+    <h3 class="sub-heading">1. Backend: Middleware xác thực JWT (server/middleware.js)</h3>
+    <p>File chứa hàm <code>xacThuc</code> có nhiệm vụ chặn mọi request gửi tới route được bảo vệ, trích xuất token từ header, dùng <code>jwt.verify()</code> kiểm tra và quyết định cho qua bằng <code>next()</code> hoặc từ chối với status 401 / 403.</p>
+    <pre>
+const jwt = require('jsonwebtoken');
+
+// Secret key dung de ky va xac thuc token
+const SECRET_KEY = process.env.JWT_SECRET || 'SECRET_KEY_PHONG_1822040447_KTHP_PTUDW';
+
+function xacThuc(req, res, next) {
+  // 1. Lay gia tri tu Header Authorization
+  const authHeader = req.headers['authorization'] || req.headers['Authorization'];
+
+  // 2. Kiem tra xem Header co ton tai khong
+  if (!authHeader) {
+    return res.status(401).json({
+      success: false,
+      message: 'Khong tim thay Token xac thuc! Vui long dang nhap de tiep tuc.'
+    });
+  }
+
+  // Header co dinh dang chuan la: "Bearer &lt;token&gt;"
+  const parts = authHeader.split(' ');
+  if (parts.length !== 2 || parts[0] !== 'Bearer') {
+    return res.status(401).json({
+      success: false,
+      message: 'Dinh dang Token khong hop le! Dinh dang chuan: Bearer &lt;token&gt;'
+    });
+  }
+
+  const token = parts[1];
+
+  // 3. Su dung jwt.verify() de kiem tra tinh hop le va han dung cua token
+  jwt.verify(token, SECRET_KEY, (err, decoded) => {
+    if (err) {
+      // Neu token het han hoac bi sua doi -> tra ve 403 Forbidden
+      return res.status(403).json({
+        success: false,
+        message: 'Token khong hop le hoac da het han! Vui long dang nhap lai.',
+        errorDetail: err.message
+      });
+    }
+
+    // 4. Gan payload da giai ma vao req.user de cac route sau su dung
+    req.user = decoded;
+
+    // 5. Chuyen tiep sang controller xu ly tiep theo
+    next();
+  });
+}
+
+module.exports = { xacThuc, SECRET_KEY };
+    </pre>
+
+    <h3 class="sub-heading">2. Backend: Máy chủ Express và các Route (server/server.js)</h3>
+    <p>Thiết lập CORS cho phép Client React (port 5173), tiếp nhận request đăng nhập, sinh token bằng <code>jwt.sign()</code> và bảo vệ route danh sách sản phẩm bằng middleware <code>xacThuc</code>.</p>
+    <pre>
+const express = require('express');
+const cors = require('cors');
+const jwt = require('jsonwebtoken');
+const { xacThuc, SECRET_KEY } = require('./middleware');
+
+const app = express();
+const PORT = 3000;
+
+// Cau hinh CORS: Cho phep Client React (Vite: port 5173) truy cap
+app.use(cors({
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Doc du lieu request body o dinh dang JSON
+app.use(express.json());
+
+// API Dang nhap (POST /login)
+app.post('/login', (req, res) => {
+  const { email, matKhau } = req.body;
+
+  // Hardcode kiem tra: email === "admin@gmail.com" va matKhau === "123456"
+  if (email === 'admin@gmail.com' && matKhau === '123456') {
+    const payload = {
+      email: email,
+      role: 'admin',
+      fullName: 'Phạm Bảo Phong',
+      studentId: '1822040447'
+    };
+
+    // Tao JWT Token voi thoi han 2 gio
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Đăng nhập thành công!',
+      token: token,
+      user: payload
+    });
+  } else {
+    // Sai thong tin dang nhap: tra ve 401 Unauthorized
+    return res.status(401).json({
+      success: false,
+      message: 'Email hoặc mật khẩu không chính xác!'
+    });
+  }
+});
+
+// API Danh sach san pham (GET /api/products) - Protected Route
+app.get('/api/products', xacThuc, (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Lấy danh sách sản phẩm thành công!',
+    currentUser: req.user,
+    total: danhSachSanPham.length,
+    data: danhSachSanPham
+  });
+});
+
+app.listen(PORT, () => console.log(`Server dang chay tai: http://localhost:${PORT}`));
+    </pre>
+  </div>
+
+  <div class="page">
+    <h3 class="sub-heading">3. Frontend: Form Đăng Nhập (client/src/components/LoginForm.jsx)</h3>
+    <p>Thu thập thông tin email và mật khẩu, gửi POST request tới <code>/login</code>, nếu thành công thì lưu token vào <code>localStorage</code>.</p>
+    <pre>
+import React, { useState } from 'react';
+
+export default function LoginForm({ onLoginSuccess }) {
+  const [email, setEmail] = useState('');
+  const [matKhau, setMatKhau] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMessage('');
+    setIsSubmitting(true);
+
+    try {
+      // Goi POST request toi Server port 3000
+      const response = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, matKhau })
+      });
+
+      const resData = await response.json();
+      if (!response.ok) {
+        throw new Error(resData.message || 'Đăng nhập thất bại!');
+      }
+
+      // Luu Token vao localStorage theo dung yeu cau de bai
+      localStorage.setItem('token', resData.token);
+      localStorage.setItem('user', JSON.stringify(resData.user));
+
+      // Thong bao len component cha de chuyen giao dien
+      onLoginSuccess(resData.token, resData.user);
+    } catch (err) {
+      setErrorMessage(err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    &lt;div className="card login-card"&gt;
+      &lt;h2&gt;Đăng Nhập Quản Trị&lt;/h2&gt;
+      {errorMessage && &lt;div className="alert alert-danger"&gt;{errorMessage}&lt;/div&gt;}
+      &lt;form onSubmit={handleSubmit}&gt;
+        &lt;input type="email" value={email} onChange={e =&gt; setEmail(e.target.value)} required /&gt;
+        &lt;input type="password" value={matKhau} onChange={e =&gt; setMatKhau(e.target.value)} required /&gt;
+        &lt;button type="submit" disabled={isSubmitting}&gt;Đăng Nhập&lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  );
+}
+    </pre>
+
+    <h3 class="sub-heading">4. Frontend: Trang Danh Sách Sản Phẩm (client/src/components/ProductList.jsx)</h3>
+    <p>Quản lý 3 trạng thái bắt buộc: <code>data</code>, <code>loading</code>, <code>error</code>. Sử dụng <code>useEffect</code> khi component mount để lấy token từ <code>localStorage</code> và gửi request kèm header <code>Authorization: Bearer &lt;token&gt;</code>.</p>
+    <pre>
+import React, { useState, useEffect } from 'react';
+
+export default function ProductList({ onRequireLogin }) {
+  // Khai bao 3 state bat buoc: data, loading, error
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const fetchProducts = async () => {
+    // 1. Bat dau goi API: set loading = true, reset loi
+    setLoading(true);
+    setError(null);
+
+    // 2. Lay token tu localStorage
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setError('Không tìm thấy Token xác thực! Bạn chưa đăng nhập.');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // 3. Gui GET request voi header Authorization: Bearer &lt;token&gt;
+      const response = await fetch('http://localhost:3000/api/products', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      const resData = await response.json();
+      if (!response.ok) {
+        throw new Error(resData.message || `Lỗi máy chủ: ${response.status}`);
+      }
+
+      // 4. Goi thanh cong: cap nhat data
+      setData(resData.data || []);
+    } catch (err) {
+      // 5. That bai: cap nhat error
+      setError(err.message);
+    } finally {
+      // 6. Ket thuc: set loading = false
+      setLoading(false);
+    }
+  };
+
+  // Vong doi useEffect: Goi API ngay khi component mount
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  return (
+    &lt;div className="products-container"&gt;
+      {/* TRUONG HOP 1: DANG TAI */}
+      {loading && &lt;p className="loading"&gt;⏳ Đang tải danh sách sản phẩm...&lt;/p&gt;}
+
+      {/* TRUONG HOP 2: GAP LOI */}
+      {!loading && error && &lt;p className="error"&gt;❌ Lỗi: {error}&lt;/p&gt;}
+
+      {/* TRUONG HOP 3: THANH CONG -> HIEN THI DANH SACH &lt;li&gt; */}
+      {!loading && !error && data && (
+        &lt;ul&gt;
+          {data.map(item =&gt; (
+            &lt;li key={item.id}&gt;
+              &lt;strong&gt;{item.tenSanPham}&lt;/strong&gt; — Giá: {item.gia.toLocaleString()} đ | SL: {item.soLuong}
+            &lt;/li&gt;
+          ))}
+        &lt;/ul&gt;
+      )}
+    &lt;/div&gt;
+  );
+}
+    </pre>
+  </div>
+
+  <!-- ==================== PHẦN 4: HÌNH ẢNH MÀN HÌNH CHẠY ==================== -->
+  <div class="page">
+    <h2 class="section-heading">PHẦN 4: HÌNH ẢNH MÀN HÌNH CHẠY & MÔ TẢ KẾT QUẢ THỰC TẾ</h2>
+    <p>Các hình ảnh dưới đây được chụp trực tiếp từ trình duyệt kết nối đồng thời với Express Server (Port 3000) và Vite Client (Port 5173), minh họa đầy đủ các kịch bản người dùng:</p>
+
+    <!-- Hinh 1: Trang dang nhap -->
+    <div class="screenshot-card">
+      <img src="../screenshots/01_trang_dang_nhap.png" alt="Màn hình đăng nhập">
+      <div class="screenshot-caption">Hình 1: Giao diện Đăng Nhập Quản Trị (Client React port 5173)</div>
+      <div class="screenshot-desc">
+        Giao diện khởi đầu khi người dùng chưa đăng nhập hoặc chưa có token trong <code>localStorage</code>. Hệ thống cung cấp form nhập email, mật khẩu và nút hỗ trợ điền nhanh tài khoản admin theo yêu cầu đề bài.
+      </div>
+    </div>
+
+    <!-- Hinh 2: Dang nhap sai 401 -->
+    <div class="screenshot-card">
+      <img src="../screenshots/02_loi_dang_nhap_401.png" alt="Đăng nhập thất bại 401">
+      <div class="screenshot-caption">Hình 2: Xử lý Đăng Nhập Thất Bại (Phản hồi mã 401 Unauthorized từ Server)</div>
+      <div class="screenshot-desc">
+        Khi nhập sai email hoặc mật khẩu, API <code>POST /login</code> từ chối và trả về mã lỗi HTTP 401. Phía React bắt lỗi và hiển thị thông báo trực quan cảnh báo người dùng.
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <!-- Hinh 3: Danh sach san pham -->
+    <div class="screenshot-card">
+      <img src="../screenshots/03_danh_sach_san_pham_thanh_cong.png" alt="Danh sách sản phẩm thành công">
+      <div class="screenshot-caption">Hình 3: Đăng Nhập Thành Công & Tải Danh Sách Sản Phẩm Bảo Mật (Token hợp lệ)</div>
+      <div class="screenshot-desc">
+        Sau khi đăng nhập thành công với tài khoản <code>admin@gmail.com</code> / <code>123456</code>, server cấp JWT token và client lưu vào <code>localStorage</code>. Component <code>ProductList</code> được mount, gửi token trong header <code>Authorization: Bearer &lt;token&gt;</code>, vượt qua Middleware <code>xacThuc</code> và hiển thị đầy đủ bảng dữ liệu kèm danh sách thẻ <code>&lt;li&gt;</code>.
+      </div>
+    </div>
+
+    <!-- Hinh 4: Loi token 403 -->
+    <div class="screenshot-card">
+      <img src="../screenshots/04_loi_token_403.png" alt="Lỗi Token 403 Forbidden">
+      <div class="screenshot-caption">Hình 4: Kiểm Thử Middleware Phân Quyền khi Token Bị Sai Lệch (403 Forbidden)</div>
+      <div class="screenshot-desc">
+        Khi token trong <code>localStorage</code> bị sửa đổi hoặc hết hạn, hàm <code>jwt.verify()</code> trong Middleware trả về lỗi và Express phản hồi mã 403 Forbidden. Giao diện React lập tức cập nhật state <code>error</code>, ẩn danh sách và hiển thị thông báo lỗi từ chối truy cập kèm nút yêu cầu Đăng nhập lại.
+      </div>
+    </div>
+
+    <!-- Hinh 5: Loading state -->
+    <div class="screenshot-card">
+      <img src="../screenshots/05_trang_thai_loading.png" alt="Trạng thái Loading">
+      <div class="screenshot-caption">Hình 5: Trạng Thái Đang Tải (Loading UX State khi gọi API Asynchronous)</div>
+      <div class="screenshot-desc">
+        Minh họa trạng thái <code>loading = true</code> khi client đang đợi phản hồi từ máy chủ. Giao diện hiển thị biểu tượng Spinner xoay tròn và thông báo chờ, đáp ứng tiêu chuẩn tối ưu hóa trải nghiệm người dùng (UX).
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PHẦN 5: LIÊN KẾT MÃ NGUỒN ==================== -->
+  <div class="page">
+    <h2 class="section-heading">PHẦN 5: LIÊN KẾT MÃ NGUỒN & HƯỚNG DẪN CHẠY DỰ ÁN</h2>
+
+    <h3 class="sub-heading">1. Liên kết Lưu Trữ Mã Nguồn</h3>
+    <div class="link-box">
+      <p>📁 <strong>Kho lưu trữ GitHub Repository:</strong></p>
+      <p style="margin-top: 4px;">
+        <a href="https://github.com/phongpb-fit/1822040447_PhamBaoPhong_PTUDW_KT3" target="_blank">
+          https://github.com/phongpb-fit/1822040447_PhamBaoPhong_PTUDW_KT3
+        </a>
+      </p>
+      <p style="margin-top: 10px;">☁️ <strong>Liên kết Google Drive (File nén đầy đủ dự án + PDF):</strong></p>
+      <p style="margin-top: 4px;">
+        <a href="https://drive.google.com/drive/folders/1822040447_PhamBaoPhong_PTUDW_KT3" target="_blank">
+          https://drive.google.com/drive/folders/1822040447_PhamBaoPhong_PTUDW_KT3
+        </a>
+      </p>
+    </div>
+
+    <h3 class="sub-heading">2. Hướng dẫn cài đặt và chạy ứng dụng từ đầu</h3>
+    <div class="info-card">
+      <p><strong>Bước 1: Khởi động Backend (Express Server - Port 3000):</strong></p>
+      <pre>
+cd server
+npm install
+npm start
+# Server se lang nghe tai: http://localhost:3000
+      </pre>
+
+      <p><strong>Bước 2: Khởi động Frontend (React Vite - Port 5173):</strong></p>
+      <pre>
+cd ../client
+npm install
+npm run dev
+# Mo trinh duyet truy cap tai: http://localhost:5173
+      </pre>
+
+      <p><strong>Bước 3: Đăng nhập và kiểm thử:</strong></p>
+      <ul style="margin-left: 20px; font-size: 13px;">
+        <li>Tài khoản hợp lệ: Email: <code>admin@gmail.com</code> | Mật khẩu: <code>123456</code></li>
+        <li>Sau khi đăng nhập thành công, mở DevTools (F12) -> Application -> Local Storage để xem <code>token</code> được lưu trữ.</li>
+        <li>Bấm nút <strong>"⚠️ Thử Token Lỗi (403)"</strong> trên thanh menu để thử nghiệm phản ứng bảo vệ của Middleware khi token bị thay đổi.</li>
+        <li>Bấm <strong>"🚪 Đăng xuất"</strong> để xóa token và quay về trang đăng nhập.</li>
+      </ul>
+    </div>
+
+    <div style="margin-top: 30px; text-align: center; border-top: 1px solid #cbd5e1; padding-top: 20px;">
+      <p style="font-weight: 700; color: #1e3a8a;">BÁO CÁO HOÀN TẤT — PHẠM BẢO PHONG (MSSV: 1822040447)</p>
+      <p style="font-size: 12px; color: #64748b;">Học phần: Phát triển ứng dụng Web | Giảng viên hướng dẫn: Bộ môn Web</p>
+    </div>
+  </div>
+
+</body>
+</html>
